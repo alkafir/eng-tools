@@ -26,6 +26,12 @@ def compute(var, dummy, op):
     f = v_freq.get()
     xi = v_damp.get()
 
+    if xi < 0.02: # Avoid freezing
+      txt_damp['fg'] = 'red'
+      return
+    else:
+      txt_damp['fg'] = txt_damp_fg_orig
+
     yinf = mu
     tmax = math.pi/f/math.sqrt(1-xi**2)
     ymax = mu*(1+math.exp(-xi*math.pi/math.sqrt(1-xi**2)))
@@ -110,6 +116,7 @@ lbl_damp = tk.Label(iiframe, text='Xi')
 txt_damp = tk.Entry(iiframe, textvariable=v_damp)
 lbl_damp.grid(column=4, row=0)
 txt_damp.grid(column=5, row=0, padx=(2, 8))
+txt_damp_fg_orig = txt_damp['fg']
 
 iiframe.pack()
 iframe.grid(column=0, row=0, columnspan=3, sticky='we')
